@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<title>Plaid CLI Setup</title>
+<button id="link-button">Link Account</button>
+
+<ul>
+  <li>Access Token: <span id="access_token"></span></li>
+  <li>Item ID: <span id="item_id"></span></li>
+</ul>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script type="text/javascript">
+  (function($) {
+    var handler = Plaid.create({
+      clientName: 'Plaid CLI Setup',
+      env: '<%= ENV["PLAID_ENV"] %>',
+      key: '<%= ENV["PLAID_PUBLIC_KEY"] %>',
+      product: ['transactions'],
+      onSuccess: function(public_token, metadata) {
+        $.post('/get_access_token', {
+          public_token: public_token
+        }, function(data) {
+          $('#item_id').text(data.item_id);
+          $('#access_token').text(data.access_token);
+        });
+      }
+    });
+
+    $('#link-button').on('click', function(e) {
+      handler.open();
+    });
+  })(jQuery);
+</script>
