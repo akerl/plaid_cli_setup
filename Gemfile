@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'plaid', '~> 6.3.1'
+gem 'plaid', '~> 8.3.0'
 gem 'sinatra', '~> 2.0.5'
